@@ -1,0 +1,21 @@
+A visual comparison of a 6-bit/channel (18-bit) and 8-bit/channel (24-bit)
+
+There are 8 rows of colors:
+
+* 8-bit Red
+* 6-bit Red
+
+* 8-bit Green
+* 6-bit Green
+
+* 8-bit Blue
+* 6-bit Blue
+
+* 8-bit Gray
+* 6-bit Gray
+
+Does the top rows appear smooth and the bottom rows have Mach Banding?
+
+Yes: Then your monitor is 8-bit/channel
+No: Then your monitor is only displaying 6-bit/channel.  Upgrade to a real monitor.
+

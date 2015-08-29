@@ -17,21 +17,7 @@ struct Image
         _area = width * height * (bpp >> 3);
         _texels = new uint8_t[ _area ];
     }
-/*
-    void ClearBlack()
-    {
-        uint8_t *p = _texels;
-        for( size_t i = 0; i < _area; i++ )
-            *p++ = 0;
-    }
 
-    void Clear8( uint8_t color = 0 )
-    {
-        uint8_t *p = _texels;
-        for( size_t i = 0; i < _area; i++ )
-            *p++ = color;
-    }
-*/
     void Free()
     {
         delete [] _texels;
@@ -116,79 +102,81 @@ int main()
 {
     Image image;
 
-    int w = 256;
-    int h = 4 * 2 * 8; // RGBW * 2 * 8
+    int s = 6;
+    int t = 16; // 16 pixels/row
+    int w = 256*s;
+    int h = 8 * t; // 2xRGBW * pixels/row
     image.Alloc( 2, 1, 24 );
-    //image.ClearBlack();
 
     uint8_t *p = image.Get( 0, 0 );
     uint8_t *d = p;
 
-    int y;
-    for( y = 0; y < 8; y++ )
-        for( int x = 0; x < w; x++ )
+    int y, x;
+    for( y = 0; y < t; y++ )
+        for( x = 0; x < w; x++ )
         {
-            *d++ = x; // red
+            *d++ = x/s; // red
             *d++ = 0;
             *d++ = 0;
         }
 
-    for( y = 0; y < 8; y++ )
-        for( int x = 0; x < w; x++ )
+    for( y = 0; y < t; y++ )
+        for( x = 0; x < w; x++ )
         {
-            *d++ = x & ~3; // red
+            *d++ = x/s & ~3; // red
             *d++ = 0;
             *d++ = 0;
         }
 
-    for( y = 0; y < 8; y++ )
-        for( int x = 0; x < w; x++ )
+    for( y = 0; y < t; y++ )
+        for( x = 0; x < w; x++ )
         {
             *d++ = 0;
-            *d++ = x; // green;
+            *d++ = x/s; // green;
             *d++ = 0;
         }
 
-    for( y = 0; y < 8; y++ )
-        for( int x = 0; x < w; x++ )
+    for( y = 0; y < t; y++ )
+        for( x = 0; x < w; x++ )
         {
             *d++ = 0;
-            *d++ = x & ~3; // green
+            *d++ = x/s & ~3; // green
             *d++ = 0;
         }
 
-    for( y = 0; y < 8; y++ )
-        for( int x = 0; x < w; x++ )
+    for( y = 0; y < t; y++ )
+        for( x = 0; x < w; x++ )
         {
             *d++ = 0;
             *d++ = 0;
-            *d++ = x; // blue
+            *d++ = x/s; // blue
         }
 
-    for( y = 0; y < 8; y++ )
-        for( int x = 0; x < w; x++ )
+    for( y = 0; y < t; y++ )
+        for( x = 0; x < w; x++ )
         {
             *d++ = 0;
             *d++ = 0;
-            *d++ = x & ~3; // blue
+            *d++ = x/s & ~3; // blue
         }
 
-    for( y = 0; y < 8; y++ )
-        for( int x = 0; x < w; x++ )
+    for( y = 0; y < t; y++ )
+        for( x = 0; x < w; x++ )
         {
-            *d++ = x; // white
-            *d++ = x; // white
-            *d++ = x; // white
+            *d++ = x/s; // white
+            *d++ = x/s; // white
+            *d++ = x/s; // white
         }
 
-    for( y = 0; y < 8; y++ )
-        for( int x = 0; x < w; x++ )
+    for( y = 0; y < t; y++ )
+        for( x = 0; x < w; x++ )
         {
-            uint8_t k = x & ~3;
+            uint8_t k = x/s & ~3;
             *d++ = k; // white
             *d++ = k; // white
             *d++ = k; // white
         }
+
     BMP_WriteColor24bit( "18bit_vs_24bit.bmp", p, w, h );
 
     image.Free();
